@@ -18,4 +18,10 @@ routes.post('/orders', OrderController.store);
 routes.post('/recipients', RecipientController.store);
 // routes.use(authMiddleware);
 
+routes.get('/deliverymans', DeliverymanController.index);
+
+routes.put('/deliveryman/:id', DeliverymanController.update);
+
+routes.delete('/deliveryman/:id', DeliverymanController.delete);
+
 export default routes;

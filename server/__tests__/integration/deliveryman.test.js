@@ -10,8 +10,21 @@ describe('Deliveryman', () => {
   });
 
   it('should be able to register', async () => {
+    await factory.create('User', {
+      email: 'admin@fastfeet.com',
+      password: '123456',
+    });
+
+    const res = await request(app)
+      .post('/sessions')
+      .send({
+        email: 'admin@fastfeet.com',
+        password: '123456',
+      });
+
     const response = await request(app)
       .post('/deliverymans')
+      .set('Authorization', `Bearer ${res.body.token}`)
       .send({
         name: 'Marty Mcfly',
         email: 'marty@gmail.com',
@@ -21,9 +34,22 @@ describe('Deliveryman', () => {
   });
 
   it('should be able to list registers', async () => {
+    await factory.create('User', {
+      email: 'admin@fastfeet.com',
+      password: '123456',
+    });
+
+    const res = await request(app)
+      .post('/sessions')
+      .send({
+        email: 'admin@fastfeet.com',
+        password: '123456',
+      });
+
     const deliveryman = await factory.attrs('Deliveryman');
     await request(app)
       .post('/deliverymans')
+      .set('Authorization', `Bearer ${res.body.token}`)
       .send(deliveryman);
 
     const { status, text } = await request(app).get('/deliverymans');
@@ -34,15 +60,29 @@ describe('Deliveryman', () => {
   });
 
   it('should be able to update register', async () => {
+    await factory.create('User', {
+      email: 'admin@fastfeet.com',
+      password: '123456',
+    });
+
+    const resSession = await request(app)
+      .post('/sessions')
+      .send({
+        email: 'admin@fastfeet.com',
+        password: '123456',
+      });
+
     const deliveryman = await factory.attrs('Deliveryman');
     const res = await request(app)
       .post('/deliverymans')
+      .set('Authorization', `Bearer ${resSession.body.token}`)
       .send(deliveryman);
 
     const { id } = res.body;
 
     const { status, text } = await request(app)
       .put(`/deliveryman/${id}`)
+      .set('Authorization', `Bearer ${resSession.body.token}`)
       .send({
         name: 'Emmet Brown',
       });
@@ -53,9 +93,22 @@ describe('Deliveryman', () => {
   });
 
   it('should be able to delete register', async () => {
+    await factory.create('User', {
+      email: 'admin@fastfeet.com',
+      password: '123456',
+    });
+
+    const resSession = await request(app)
+      .post('/sessions')
+      .send({
+        email: 'admin@fastfeet.com',
+        password: '123456',
+      });
+
     const deliveryman = await factory.attrs('Deliveryman');
     const res = await request(app)
       .post('/deliverymans')
+      .set('Authorization', `Bearer ${resSession.body.token}`)
       .send(deliveryman);
 
     const { id } = res.body;

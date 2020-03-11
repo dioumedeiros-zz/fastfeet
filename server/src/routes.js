@@ -1,4 +1,5 @@
 import { Router } from 'express';
+
 import multer from 'multer';
 import multerConfig from './config/multer';
 
@@ -21,7 +22,7 @@ routes.post('/users', UserController.store);
 routes.post('/deliverymans', DeliverymanController.store);
 routes.post('/orders', OrderController.store);
 routes.post('/recipients', RecipientController.store);
-routes.post('/files', upload, FileController.store);
+routes.post('/files', upload.single('file'), FileController.store);
 
 routes.get('/deliverymans', DeliverymanController.index);
 

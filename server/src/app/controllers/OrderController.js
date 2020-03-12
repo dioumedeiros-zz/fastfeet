@@ -1,3 +1,5 @@
+import { format } from 'date-fns';
+import pt from 'date-fns/locale/pt';
 import Order from '../models/Order';
 import Mail from '../../config/mail';
 
@@ -8,7 +10,14 @@ class OrderController {
     await Mail.sendMail({
       to: `teste`,
       subject: 'Encomenta efetuada com sucesso',
-      text: 'Deu boa',
+      tamplate: 'cancelation',
+      context: {
+        provider: 'aquele',
+        user: 'Dionatan',
+        data: format(new Date(), "'dia' dd 'de' MMM', às' H:mm'h'", {
+          locale: pt,
+        }),
+      },
     });
 
     return res.json(order);
